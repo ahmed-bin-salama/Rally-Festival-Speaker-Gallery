@@ -25,7 +25,7 @@ export const SpeakerPageLayout: React.FC<SpeakerPageLayoutProps> = ({
           <button
             type="button"
             onClick={onBackToGallery}
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-200 text-xs font-semibold transition-colors border border-gray-700/60"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-gray-800/80 hover:bg-gray-700 text-gray-200 text-xs font-semibold transition-colors border border-gray-700/60 focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
           >
             <ArrowLeft className="w-4 h-4 text-[#D4AF37]" />
             <span>Back to Gallery</span>
@@ -60,7 +60,7 @@ export const SpeakerPageLayout: React.FC<SpeakerPageLayoutProps> = ({
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 relative z-10">
             {/* Left: Avatar Image Area */}
             <div className="w-28 h-28 sm:w-36 sm:h-36 shrink-0 rounded-2xl overflow-hidden border-2 border-[#800020]/50 shadow-xl bg-[#0d0e12]">
-              <AvatarPlaceholder name={speaker.name} className="w-full h-full text-3xl font-black" />
+              <AvatarPlaceholder name={speaker.name} imagePath={speaker.avatar} className="w-full h-full text-3xl font-black" />
             </div>
 
             {/* Right: Speaker Identity & Experience */}

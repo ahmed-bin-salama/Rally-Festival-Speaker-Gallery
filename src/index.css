@@ -16,7 +16,7 @@ body,
 }
 
 body {
-  background-color: #0f1117;
+  background-color: #0d0e12;
   color: #e0e0e0;
   font-family: 'Inter', 'Cairo', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -26,4 +26,10 @@ body {
 #root {
   display: flex;
   flex-direction: column;
+}
+
+/* Accessible focus-visible styles matching Rally brand styling */
+:focus-visible {
+  outline: 2px solid #D4AF37 !important;
+  outline-offset: 2px !important;
 }

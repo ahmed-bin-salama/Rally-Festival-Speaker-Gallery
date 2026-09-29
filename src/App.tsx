@@ -16,18 +16,22 @@ function parseRoute(): AppView {
   if (hash === '#random-interview' || hash === '#/random-interview') {
     return { type: 'random-interview' };
   }
-  if (hash.startsWith('#speaker/')) {
-    const rawId = hash.replace('#speaker/', '');
-    const speakerId = decodeURIComponent(rawId);
-    if (speakerId) {
-      return { type: 'speaker', speakerId };
-    }
-  }
-  if (hash.startsWith('#/speaker/')) {
-    const rawId = hash.replace('#/speaker/', '');
-    const speakerId = decodeURIComponent(rawId);
-    if (speakerId) {
-      return { type: 'speaker', speakerId };
+
+  if (hash.startsWith('#speaker/') || hash.startsWith('#/speaker/')) {
+    const rawId = hash.replace(/^#\/?speaker\//, '');
+    try {
+      const speakerId = decodeURIComponent(rawId);
+      const speakerExists = SPEAKERS_DATA.some((speaker) => speaker.id === speakerId);
+
+      if (speakerId && speakerExists) {
+        return { type: 'speaker', speakerId };
+      }
+
+      if (speakerId && !speakerExists) {
+        console.warn(`Speaker not found: "${speakerId}". Defaulting to gallery.`);
+      }
+    } catch {
+      console.warn('Invalid speaker route encoding. Defaulting to gallery.');
     }
   }
 
