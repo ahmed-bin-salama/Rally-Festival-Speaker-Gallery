@@ -34,13 +34,13 @@ export const SpeakerPageLayout: React.FC<SpeakerPageLayoutProps> = ({
           {/* Rally Logos */}
           <div className="flex items-center gap-3">
             <img
-              src="assets/rally-egypt.png"
+              src="/assets/rally-egypt.png"
               alt="Rally Egypt Logo"
               className="h-8 w-auto object-contain"
             />
             <div className="h-4 w-px bg-gray-800" />
             <img
-              src="assets/rally-society-logo.png"
+              src="/assets/rally-society-logo.png"
               alt="Rally Society Logo"
               className="h-7 w-auto object-contain"
             />
