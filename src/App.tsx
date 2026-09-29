@@ -50,6 +50,7 @@ export function App() {
   const [currentView, setCurrentView] = useState<AppView>(parseRoute);
   const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
 
+  // Preload all speaker data in the background after gallery loads
   useEffect(() => {
     const speakerIds = SPEAKERS_METADATA.map((sp) => sp.id);
     preloadSpeakers(speakerIds);
