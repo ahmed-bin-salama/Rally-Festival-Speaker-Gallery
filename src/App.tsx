@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState, useEffect, useMemo } from 'react';
 import { SPEAKERS_METADATA } from './data/speakersMetadata';
-import { loadSpeaker } from './data/loadSpeaker';
+import { loadSpeaker, preloadSpeakers } from './data/loadSpeaker';
 import { Speaker, SpeakerStatus } from './types/speaker';
 import { getSavedStatuses, saveSpeakerStatus } from './utils/storage';
 import { sortSpeakersByDefaultPriority } from './utils/sorting';
@@ -17,7 +17,13 @@ const RandomInterviewPage = lazy(() =>
 
 type AppView = { type: 'gallery' } | { type: 'speaker'; speakerId: string } | { type: 'random-interview' };
 
-type GallerySpeaker = Pick<Speaker, 'id' | 'name' | 'role' | 'avatar' | 'status' | 'originalIndex'> & {
+type GallerySpeaker = {
+  id: string;
+  name: string;
+  role: string;
+  avatar: string;
+  status: SpeakerStatus;
+  originalIndex: number;
   questionCount: number;
 };
 
@@ -53,6 +59,12 @@ export function App() {
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
   const [currentView, setCurrentView] = useState<AppView>(parseRoute);
   const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
+
+  // Preload all speaker data in the background after gallery loads
+  useEffect(() => {
+    const speakerIds = SPEAKERS_METADATA.map((sp) => sp.id);
+    preloadSpeakers(speakerIds);
+  }, []);
 
   useEffect(() => {
     const handlePopState = () => {
