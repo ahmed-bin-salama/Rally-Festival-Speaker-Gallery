@@ -153,7 +153,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
           </div>
 
           <div className="flex items-center gap-2">
-            <img src="assets/rally-society-logo.png" alt="Rally Logo" className="h-7 w-auto object-contain hidden md:block" />
+            <img src="/assets/rally-society-logo.png" alt="Rally Logo" className="h-7 w-auto object-contain hidden md:block" />
           </div>
         </div>
       </header>

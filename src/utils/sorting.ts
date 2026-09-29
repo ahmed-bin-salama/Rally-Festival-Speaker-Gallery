@@ -1,4 +1,4 @@
-import { Speaker, SpeakerStatus } from '../types/speaker';
+import { SpeakerStatus } from '../types/speaker';
 
 const STATUS_PRIORITY: Record<SpeakerStatus, number> = {
   not_interviewed: 1,
@@ -7,7 +7,9 @@ const STATUS_PRIORITY: Record<SpeakerStatus, number> = {
   completed: 4,
 };
 
-export function sortSpeakersByDefaultPriority(speakers: Speaker[]): Speaker[] {
+export function sortSpeakersByDefaultPriority<T extends { status: SpeakerStatus; originalIndex: number }>(
+  speakers: T[]
+): T[] {
   return [...speakers].sort((a, b) => {
     const priorityA = STATUS_PRIORITY[a.status] || 99;
     const priorityB = STATUS_PRIORITY[b.status] || 99;
