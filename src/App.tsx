@@ -1,5 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
-import { SPEAKERS_DATA } from './data/speakersData';
+import { lazy, Suspense, useState, useEffect, useMemo } from 'react';
+import { SPEAKERS_METADATA } from './data/speakersMetadata';
+import { loadSpeaker } from './data/loadSpeaker';
 import { Speaker, SpeakerStatus } from './types/speaker';
 import { getSavedStatuses, saveSpeakerStatus } from './utils/storage';
 import { sortSpeakersByDefaultPriority } from './utils/sorting';
@@ -7,9 +8,18 @@ import { GalleryHeader } from './components/GalleryHeader';
 import { FilterBar, FilterOption } from './components/FilterBar';
 import { SpeakerCard } from './components/SpeakerCard';
 import { SpeakerPageLayout } from './components/SpeakerPageLayout';
-import { RandomInterviewPage } from './random-interview/RandomInterviewPage';
+
+const RandomInterviewPage = lazy(() =>
+  import('./random-interview/RandomInterviewPage').then((module) => ({
+    default: module.RandomInterviewPage,
+  }))
+);
 
 type AppView = { type: 'gallery' } | { type: 'speaker'; speakerId: string } | { type: 'random-interview' };
+
+type GallerySpeaker = Pick<Speaker, 'id' | 'name' | 'role' | 'avatar' | 'status' | 'originalIndex'> & {
+  questionCount: number;
+};
 
 function parseRoute(): AppView {
   const hash = window.location.hash;
@@ -21,7 +31,7 @@ function parseRoute(): AppView {
     const rawId = hash.replace(/^#\/?speaker\//, '');
     try {
       const speakerId = decodeURIComponent(rawId);
-      const speakerExists = SPEAKERS_DATA.some((speaker) => speaker.id === speakerId);
+      const speakerExists = SPEAKERS_METADATA.some((speaker) => speaker.id === speakerId);
 
       if (speakerId && speakerExists) {
         return { type: 'speaker', speakerId };
@@ -39,16 +49,11 @@ function parseRoute(): AppView {
 }
 
 export function App() {
-  // Saved statuses map
   const [statuses, setStatuses] = useState<Record<string, SpeakerStatus>>(() => getSavedStatuses());
-
-  // Filter option state
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
-
-  // Route state
   const [currentView, setCurrentView] = useState<AppView>(parseRoute);
+  const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
 
-  // Handle route changes
   useEffect(() => {
     const handlePopState = () => {
       setCurrentView(parseRoute());
@@ -63,84 +68,138 @@ export function App() {
     };
   }, []);
 
-  // Update status handler
+  useEffect(() => {
+    if (currentView.type !== 'speaker') {
+      setSelectedSpeaker(null);
+      return;
+    }
+
+    let didCancel = false;
+    loadSpeaker(currentView.speakerId).then((speaker) => {
+      if (!didCancel) {
+        setSelectedSpeaker(speaker ?? null);
+      }
+    });
+
+    return () => {
+      didCancel = true;
+    };
+  }, [currentView]);
+
   const handleStatusChange = (speakerId: string, newStatus: SpeakerStatus) => {
     const updated = saveSpeakerStatus(speakerId, newStatus);
     setStatuses(updated);
+
+    setSelectedSpeaker((prev) => {
+      if (!prev || prev.id !== speakerId) return prev;
+      return { ...prev, status: newStatus };
+    });
   };
 
-  // Navigate to speaker page
   const handleSelectSpeaker = (speakerId: string) => {
     window.location.hash = `speaker/${encodeURIComponent(speakerId)}`;
     setCurrentView({ type: 'speaker', speakerId });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Open Random Interview Page
   const handleOpenRandomInterview = () => {
     window.location.hash = 'random-interview';
     setCurrentView({ type: 'random-interview' });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Back to gallery
   const handleBackToGallery = () => {
     window.location.hash = '';
     setCurrentView({ type: 'gallery' });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Map speakers with their persistent statuses
-  const speakersWithStatus: Speaker[] = useMemo(() => {
-    return SPEAKERS_DATA.map((sp) => ({
-      ...sp,
+  const gallerySpeakers = useMemo<GallerySpeaker[]>(() => {
+    return SPEAKERS_METADATA.map((sp) => ({
+      id: sp.id,
+      name: sp.name,
+      role: sp.role,
+      avatar: sp.avatar,
       status: statuses[sp.id] || 'not_interviewed',
+      originalIndex: sp.originalIndex,
+      questionCount: sp.questionCount,
     }));
   }, [statuses]);
 
-  // Priority sorted speakers
   const sortedSpeakers = useMemo(() => {
-    return sortSpeakersByDefaultPriority(speakersWithStatus);
-  }, [speakersWithStatus]);
+    if (currentView.type !== 'gallery') return gallerySpeakers;
+    return sortSpeakersByDefaultPriority(gallerySpeakers);
+  }, [gallerySpeakers, currentView.type]);
 
-  // Counts for filter bar
   const filterCounts = useMemo(() => {
+    if (currentView.type !== 'gallery') {
+      return {
+        all: gallerySpeakers.length,
+        not_interviewed: 0,
+        postponed: 0,
+        failed: 0,
+        completed: 0,
+      } satisfies Record<FilterOption, number>;
+    }
+
     const counts: Record<FilterOption, number> = {
-      all: speakersWithStatus.length,
+      all: gallerySpeakers.length,
       not_interviewed: 0,
       postponed: 0,
       failed: 0,
       completed: 0,
     };
-    speakersWithStatus.forEach((sp) => {
+
+    gallerySpeakers.forEach((sp) => {
       if (counts[sp.status] !== undefined) {
         counts[sp.status]++;
       }
     });
+
     return counts;
-  }, [speakersWithStatus]);
+  }, [gallerySpeakers, currentView.type]);
 
-  // Filtered speakers
   const displayedSpeakers = useMemo(() => {
-    if (activeFilter === 'all') {
-      return sortedSpeakers;
-    }
+    if (currentView.type !== 'gallery') return [];
+    if (activeFilter === 'all') return sortedSpeakers;
     return sortedSpeakers.filter((sp) => sp.status === activeFilter);
-  }, [sortedSpeakers, activeFilter]);
+  }, [sortedSpeakers, activeFilter, currentView.type]);
 
-  // Selected speaker object if in speaker view
-  const selectedSpeaker = useMemo(() => {
-    if (currentView.type !== 'speaker') return null;
-    return speakersWithStatus.find((sp) => sp.id === currentView.speakerId) || null;
-  }, [speakersWithStatus, currentView]);
-
-  // Render Random Interview Page
   if (currentView.type === 'random-interview') {
-    return <RandomInterviewPage onBackToGallery={handleBackToGallery} />;
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex items-center justify-center">
+            <p className="text-sm text-gray-300">Loading Random Interview...</p>
+          </div>
+        }
+      >
+        <RandomInterviewPage onBackToGallery={handleBackToGallery} />
+      </Suspense>
+    );
   }
 
-  // Render Speaker Page
-  if (selectedSpeaker) {
+  if (currentView.type === 'speaker') {
+    if (!selectedSpeaker) {
+      return (
+        <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-sm text-gray-300">Loading speaker profile...</p>
+            <button
+              type="button"
+              onClick={handleBackToGallery}
+              className="mt-4 text-xs text-[#D4AF37] hover:underline"
+            >
+              Back to Gallery
+            </button>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <SpeakerPageLayout
         speaker={selectedSpeaker}
@@ -150,19 +209,14 @@ export function App() {
     );
   }
 
-  // Render Gallery Index Page
   return (
     <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex flex-col">
       <GalleryHeader onOpenRandomInterview={handleOpenRandomInterview} />
 
       <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-
-        {/* Controls Bar: Filters & Summary */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#11131a] p-4 rounded-2xl border border-gray-800">
           <div>
-            <h2 className="text-sm font-semibold text-gray-300">
-              Filter Speakers by Status
-            </h2>
+            <h2 className="text-sm font-semibold text-gray-300">Filter Speakers by Status</h2>
             <p className="text-xs text-gray-500 mt-0.5">
               Default priority: Unprocessed → Postponed → Failed → Completed
             </p>
@@ -175,7 +229,6 @@ export function App() {
           />
         </div>
 
-        {/* Gallery Grid: 6 columns on xl/2xl, scaling down to 1 column on mobile */}
         {displayedSpeakers.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-5">
             {displayedSpeakers.map((speaker) => (
@@ -200,10 +253,8 @@ export function App() {
             </button>
           </div>
         )}
-
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-gray-800/80 bg-[#11131a] py-6 text-center text-xs text-gray-500">
         <p>Rally Speaker Interview Gallery • 18 Speakers • 2026</p>
       </footer>
