@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
 import { SPEAKERS_METADATA } from './data/speakersMetadata';
-import { loadSpeaker } from './data/loadSpeaker';
+import { loadSpeaker, preloadSpeakers } from './data/loadSpeaker';
 import { Speaker, SpeakerCardData, SpeakerStatus } from './types/speaker';
 import { getSavedStatuses, saveSpeakerStatus } from './utils/storage';
 import { sortSpeakersByDefaultPriority } from './utils/sorting';
@@ -10,7 +10,9 @@ import { SpeakerCard } from './components/SpeakerCard';
 import { SpeakerPageLayout } from './components/SpeakerPageLayout';
 
 const RandomInterviewPage = lazy(() =>
-  import('./random-interview/RandomInterviewPage').then((m) => ({ default: m.RandomInterviewPage }))
+  import('./random-interview/RandomInterviewPage').then((module) => ({
+    default: module.RandomInterviewPage,
+  }))
 );
 
 type AppView = { type: 'gallery' } | { type: 'speaker'; speakerId: string } | { type: 'random-interview' };
@@ -43,20 +45,16 @@ function parseRoute(): AppView {
 }
 
 export function App() {
-  // Saved statuses map
   const [statuses, setStatuses] = useState<Record<string, SpeakerStatus>>(() => getSavedStatuses());
-
-  // Filter option state
   const [activeFilter, setActiveFilter] = useState<FilterOption>('all');
-
-  // Route state
   const [currentView, setCurrentView] = useState<AppView>(parseRoute);
+  const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
 
-  // Dynamic speaker detail state
-  const [fullSpeaker, setFullSpeaker] = useState<Speaker | null>(null);
-  const [isLoadingSpeaker, setIsLoadingSpeaker] = useState<boolean>(false);
+  useEffect(() => {
+    const speakerIds = SPEAKERS_METADATA.map((sp) => sp.id);
+    preloadSpeakers(speakerIds);
+  }, []);
 
-  // Handle route changes
   useEffect(() => {
     const handlePopState = () => {
       setCurrentView(parseRoute());
@@ -71,102 +69,101 @@ export function App() {
     };
   }, []);
 
-  // Load full speaker data when currentView is speaker detail
   useEffect(() => {
-    if (currentView.type === 'speaker') {
-      setIsLoadingSpeaker(true);
-      loadSpeaker(currentView.speakerId).then((sp) => {
-        setFullSpeaker(sp);
-        setIsLoadingSpeaker(false);
-      });
-    } else {
-      setFullSpeaker(null);
-      setIsLoadingSpeaker(false);
+    if (currentView.type !== 'speaker') {
+      setSelectedSpeaker(null);
+      return;
     }
+
+    let didCancel = false;
+    loadSpeaker(currentView.speakerId).then((speaker) => {
+      if (!didCancel) {
+        setSelectedSpeaker(speaker ?? null);
+      }
+    });
+
+    return () => {
+      didCancel = true;
+    };
   }, [currentView]);
 
-  // Update status handler
   const handleStatusChange = useCallback((speakerId: string, newStatus: SpeakerStatus) => {
     const updated = saveSpeakerStatus(speakerId, newStatus);
     setStatuses(updated);
+
+    setSelectedSpeaker((prev) => {
+      if (!prev || prev.id !== speakerId) return prev;
+      return { ...prev, status: newStatus };
+    });
   }, []);
 
-  // Navigate to speaker page
   const handleSelectSpeaker = useCallback((speakerId: string) => {
     window.location.hash = `speaker/${encodeURIComponent(speakerId)}`;
     setCurrentView({ type: 'speaker', speakerId });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Open Random Interview Page
   const handleOpenRandomInterview = useCallback(() => {
     window.location.hash = 'random-interview';
     setCurrentView({ type: 'random-interview' });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Back to gallery
   const handleBackToGallery = useCallback(() => {
     window.location.hash = '';
     setCurrentView({ type: 'gallery' });
+    setSelectedSpeaker(null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
-  // Map metadata speakers with their persistent statuses
-  const speakersWithStatus: SpeakerCardData[] = useMemo(() => {
+  const gallerySpeakers = useMemo<SpeakerCardData[]>(() => {
     return SPEAKERS_METADATA.map((sp) => ({
       ...sp,
       status: statuses[sp.id] || 'not_interviewed',
     }));
   }, [statuses]);
 
-  // Priority sorted speakers (calculated only when in gallery view)
   const sortedSpeakers = useMemo(() => {
-    if (currentView.type !== 'gallery') return speakersWithStatus;
-    return sortSpeakersByDefaultPriority(speakersWithStatus);
-  }, [speakersWithStatus, currentView.type]);
+    if (currentView.type !== 'gallery') return gallerySpeakers;
+    return sortSpeakersByDefaultPriority(gallerySpeakers);
+  }, [gallerySpeakers, currentView.type]);
 
-  // Counts for filter bar (calculated only when in gallery view)
   const filterCounts = useMemo(() => {
+    if (currentView.type !== 'gallery') {
+      return {
+        all: gallerySpeakers.length,
+        not_interviewed: 0,
+        postponed: 0,
+        failed: 0,
+        completed: 0,
+      } satisfies Record<FilterOption, number>;
+    }
+
     const counts: Record<FilterOption, number> = {
-      all: speakersWithStatus.length,
+      all: gallerySpeakers.length,
       not_interviewed: 0,
       postponed: 0,
       failed: 0,
       completed: 0,
     };
 
-    if (currentView.type !== 'gallery') {
-      return counts;
-    }
-
-    speakersWithStatus.forEach((sp) => {
+    gallerySpeakers.forEach((sp) => {
       if (counts[sp.status] !== undefined) {
         counts[sp.status]++;
       }
     });
-    return counts;
-  }, [speakersWithStatus, currentView.type]);
 
-  // Filtered speakers (calculated only when in gallery view)
+    return counts;
+  }, [gallerySpeakers, currentView.type]);
+
   const displayedSpeakers = useMemo(() => {
     if (currentView.type !== 'gallery') return [];
-    if (activeFilter === 'all') {
-      return sortedSpeakers;
-    }
+    if (activeFilter === 'all') return sortedSpeakers;
     return sortedSpeakers.filter((sp) => sp.status === activeFilter);
   }, [sortedSpeakers, activeFilter, currentView.type]);
 
-  // Selected speaker with updated status if in speaker view
-  const selectedSpeaker = useMemo(() => {
-    if (!fullSpeaker) return null;
-    return {
-      ...fullSpeaker,
-      status: statuses[fullSpeaker.id] || fullSpeaker.status || 'not_interviewed',
-    };
-  }, [fullSpeaker, statuses]);
-
-  // Render Random Interview Page
   if (currentView.type === 'random-interview') {
     return (
       <Suspense
@@ -184,14 +181,20 @@ export function App() {
     );
   }
 
-  // Render Speaker Page
   if (currentView.type === 'speaker') {
-    if (isLoadingSpeaker || !selectedSpeaker) {
+    if (!selectedSpeaker) {
       return (
         <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
-            <p className="text-xs text-gray-400 font-medium">Loading speaker details...</p>
+          <div className="text-center">
+            <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="mt-4 text-sm text-gray-300">Loading speaker profile...</p>
+            <button
+              type="button"
+              onClick={handleBackToGallery}
+              className="mt-4 text-xs text-[#D4AF37] hover:underline"
+            >
+              Back to Gallery
+            </button>
           </div>
         </div>
       );
@@ -206,19 +209,14 @@ export function App() {
     );
   }
 
-  // Render Gallery Index Page
   return (
     <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex flex-col">
       <GalleryHeader onOpenRandomInterview={handleOpenRandomInterview} />
 
       <main className="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
-
-        {/* Controls Bar: Filters & Summary */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#11131a] p-4 rounded-2xl border border-gray-800">
           <div>
-            <h2 className="text-sm font-semibold text-gray-300">
-              Filter Speakers by Status
-            </h2>
+            <h2 className="text-sm font-semibold text-gray-300">Filter Speakers by Status</h2>
             <p className="text-xs text-gray-500 mt-0.5">
               Default priority: Unprocessed → Postponed → Failed → Completed
             </p>
@@ -231,7 +229,6 @@ export function App() {
           />
         </div>
 
-        {/* Gallery Grid: 6 columns on xl/2xl, scaling down to 1 column on mobile */}
         {displayedSpeakers.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-5">
             {displayedSpeakers.map((speaker) => (
@@ -249,6 +246,7 @@ export function App() {
               No speakers found matching the selected filter.
             </p>
             <button
+              type="button"
               onClick={() => setActiveFilter('all')}
               className="mt-3 text-xs text-[#D4AF37] hover:underline"
             >
@@ -256,10 +254,8 @@ export function App() {
             </button>
           </div>
         )}
-
       </main>
 
-      {/* Footer */}
       <footer className="border-t border-gray-800/80 bg-[#11131a] py-6 text-center text-xs text-gray-500">
         <p>Rally Speaker Interview Gallery • 18 Speakers • 2026</p>
       </footer>

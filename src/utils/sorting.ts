@@ -16,7 +16,6 @@ export function sortSpeakersByDefaultPriority<T extends SpeakerCardData>(speaker
       return priorityA - priorityB;
     }
 
-    // Preserve source order within identical status
     return a.originalIndex - b.originalIndex;
   });
 }
