@@ -6,13 +6,17 @@ export interface Question {
   responseNote: string; // Defaults to "تعقيب"
 }
 
-export interface Speaker {
-  id: string; // e.g. "abdullah-amer"
+export interface SpeakerCardData {
+  id: string;
   name: string;
   role: string;
   avatar: string;
+  questionCount?: number;
+  originalIndex: number;
+  status: SpeakerStatus;
+}
+
+export interface Speaker extends SpeakerCardData {
   introduction: string;
   questions: Question[];
-  status: SpeakerStatus;
-  originalIndex: number;
 }

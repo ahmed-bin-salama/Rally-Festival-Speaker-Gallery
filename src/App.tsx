@@ -1,13 +1,17 @@
-import { useState, useEffect, useMemo } from 'react';
-import { SPEAKERS_DATA } from './data/speakersData';
-import { Speaker, SpeakerStatus } from './types/speaker';
+import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
+import { SPEAKERS_METADATA } from './data/speakersMetadata';
+import { loadSpeaker } from './data/loadSpeaker';
+import { Speaker, SpeakerCardData, SpeakerStatus } from './types/speaker';
 import { getSavedStatuses, saveSpeakerStatus } from './utils/storage';
 import { sortSpeakersByDefaultPriority } from './utils/sorting';
 import { GalleryHeader } from './components/GalleryHeader';
 import { FilterBar, FilterOption } from './components/FilterBar';
 import { SpeakerCard } from './components/SpeakerCard';
 import { SpeakerPageLayout } from './components/SpeakerPageLayout';
-import { RandomInterviewPage } from './random-interview/RandomInterviewPage';
+
+const RandomInterviewPage = lazy(() =>
+  import('./random-interview/RandomInterviewPage').then((m) => ({ default: m.RandomInterviewPage }))
+);
 
 type AppView = { type: 'gallery' } | { type: 'speaker'; speakerId: string } | { type: 'random-interview' };
 
@@ -21,7 +25,7 @@ function parseRoute(): AppView {
     const rawId = hash.replace(/^#\/?speaker\//, '');
     try {
       const speakerId = decodeURIComponent(rawId);
-      const speakerExists = SPEAKERS_DATA.some((speaker) => speaker.id === speakerId);
+      const speakerExists = SPEAKERS_METADATA.some((speaker) => speaker.id === speakerId);
 
       if (speakerId && speakerExists) {
         return { type: 'speaker', speakerId };
@@ -48,6 +52,10 @@ export function App() {
   // Route state
   const [currentView, setCurrentView] = useState<AppView>(parseRoute);
 
+  // Dynamic speaker detail state
+  const [fullSpeaker, setFullSpeaker] = useState<Speaker | null>(null);
+  const [isLoadingSpeaker, setIsLoadingSpeaker] = useState<boolean>(false);
+
   // Handle route changes
   useEffect(() => {
     const handlePopState = () => {
@@ -63,47 +71,62 @@ export function App() {
     };
   }, []);
 
+  // Load full speaker data when currentView is speaker detail
+  useEffect(() => {
+    if (currentView.type === 'speaker') {
+      setIsLoadingSpeaker(true);
+      loadSpeaker(currentView.speakerId).then((sp) => {
+        setFullSpeaker(sp);
+        setIsLoadingSpeaker(false);
+      });
+    } else {
+      setFullSpeaker(null);
+      setIsLoadingSpeaker(false);
+    }
+  }, [currentView]);
+
   // Update status handler
-  const handleStatusChange = (speakerId: string, newStatus: SpeakerStatus) => {
+  const handleStatusChange = useCallback((speakerId: string, newStatus: SpeakerStatus) => {
     const updated = saveSpeakerStatus(speakerId, newStatus);
     setStatuses(updated);
-  };
+  }, []);
 
   // Navigate to speaker page
-  const handleSelectSpeaker = (speakerId: string) => {
+  const handleSelectSpeaker = useCallback((speakerId: string) => {
     window.location.hash = `speaker/${encodeURIComponent(speakerId)}`;
     setCurrentView({ type: 'speaker', speakerId });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   // Open Random Interview Page
-  const handleOpenRandomInterview = () => {
+  const handleOpenRandomInterview = useCallback(() => {
     window.location.hash = 'random-interview';
     setCurrentView({ type: 'random-interview' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
   // Back to gallery
-  const handleBackToGallery = () => {
+  const handleBackToGallery = useCallback(() => {
     window.location.hash = '';
     setCurrentView({ type: 'gallery' });
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  }, []);
 
-  // Map speakers with their persistent statuses
-  const speakersWithStatus: Speaker[] = useMemo(() => {
-    return SPEAKERS_DATA.map((sp) => ({
+  // Map metadata speakers with their persistent statuses
+  const speakersWithStatus: SpeakerCardData[] = useMemo(() => {
+    return SPEAKERS_METADATA.map((sp) => ({
       ...sp,
       status: statuses[sp.id] || 'not_interviewed',
     }));
   }, [statuses]);
 
-  // Priority sorted speakers
+  // Priority sorted speakers (calculated only when in gallery view)
   const sortedSpeakers = useMemo(() => {
+    if (currentView.type !== 'gallery') return speakersWithStatus;
     return sortSpeakersByDefaultPriority(speakersWithStatus);
-  }, [speakersWithStatus]);
+  }, [speakersWithStatus, currentView.type]);
 
-  // Counts for filter bar
+  // Counts for filter bar (calculated only when in gallery view)
   const filterCounts = useMemo(() => {
     const counts: Record<FilterOption, number> = {
       all: speakersWithStatus.length,
@@ -112,35 +135,68 @@ export function App() {
       failed: 0,
       completed: 0,
     };
+
+    if (currentView.type !== 'gallery') {
+      return counts;
+    }
+
     speakersWithStatus.forEach((sp) => {
       if (counts[sp.status] !== undefined) {
         counts[sp.status]++;
       }
     });
     return counts;
-  }, [speakersWithStatus]);
+  }, [speakersWithStatus, currentView.type]);
 
-  // Filtered speakers
+  // Filtered speakers (calculated only when in gallery view)
   const displayedSpeakers = useMemo(() => {
+    if (currentView.type !== 'gallery') return [];
     if (activeFilter === 'all') {
       return sortedSpeakers;
     }
     return sortedSpeakers.filter((sp) => sp.status === activeFilter);
-  }, [sortedSpeakers, activeFilter]);
+  }, [sortedSpeakers, activeFilter, currentView.type]);
 
-  // Selected speaker object if in speaker view
+  // Selected speaker with updated status if in speaker view
   const selectedSpeaker = useMemo(() => {
-    if (currentView.type !== 'speaker') return null;
-    return speakersWithStatus.find((sp) => sp.id === currentView.speakerId) || null;
-  }, [speakersWithStatus, currentView]);
+    if (!fullSpeaker) return null;
+    return {
+      ...fullSpeaker,
+      status: statuses[fullSpeaker.id] || fullSpeaker.status || 'not_interviewed',
+    };
+  }, [fullSpeaker, statuses]);
 
   // Render Random Interview Page
   if (currentView.type === 'random-interview') {
-    return <RandomInterviewPage onBackToGallery={handleBackToGallery} />;
+    return (
+      <Suspense
+        fallback={
+          <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex items-center justify-center">
+            <div className="flex flex-col items-center gap-3">
+              <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+              <p className="text-xs text-gray-400 font-medium">Loading Random Interview Wheel...</p>
+            </div>
+          </div>
+        }
+      >
+        <RandomInterviewPage onBackToGallery={handleBackToGallery} />
+      </Suspense>
+    );
   }
 
   // Render Speaker Page
-  if (selectedSpeaker) {
+  if (currentView.type === 'speaker') {
+    if (isLoadingSpeaker || !selectedSpeaker) {
+      return (
+        <div className="min-h-screen bg-[#0d0e12] text-gray-100 flex items-center justify-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full animate-spin" />
+            <p className="text-xs text-gray-400 font-medium">Loading speaker details...</p>
+          </div>
+        </div>
+      );
+    }
+
     return (
       <SpeakerPageLayout
         speaker={selectedSpeaker}

@@ -1,17 +1,17 @@
 import React from 'react';
-import { Speaker, SpeakerStatus } from '../types/speaker';
+import { SpeakerCardData, SpeakerStatus } from '../types/speaker';
 import { AvatarPlaceholder } from './AvatarPlaceholder';
 import { StatusBadge } from './StatusBadge';
 import { ThreeDotMenu } from './ThreeDotMenu';
 import { ChevronRight } from 'lucide-react';
 
 interface SpeakerCardProps {
-  speaker: Speaker;
+  speaker: SpeakerCardData;
   onSelectSpeaker: (speakerId: string) => void;
   onStatusChange: (speakerId: string, status: SpeakerStatus) => void;
 }
 
-export const SpeakerCard: React.FC<SpeakerCardProps> = ({
+export const SpeakerCard: React.FC<SpeakerCardProps> = React.memo(({
   speaker,
   onSelectSpeaker,
   onStatusChange
@@ -27,6 +27,8 @@ export const SpeakerCard: React.FC<SpeakerCardProps> = ({
       onSelectSpeaker(speaker.id);
     }
   };
+
+  const questionCountDisplay = speaker.questionCount !== undefined ? speaker.questionCount : 10;
 
   return (
     <div
@@ -69,10 +71,10 @@ export const SpeakerCard: React.FC<SpeakerCardProps> = ({
 
         {/* Footer Meta */}
         <div className="mt-3 pt-2 border-t border-gray-800/60 flex items-center justify-between text-[11px] text-gray-500">
-          <span>{speaker.questions.length} Questions</span>
+          <span>{questionCountDisplay} Questions</span>
           <span className="group-hover:text-[#D4AF37] transition-colors">Rally 2026</span>
         </div>
       </div>
     </div>
   );
-};
+});

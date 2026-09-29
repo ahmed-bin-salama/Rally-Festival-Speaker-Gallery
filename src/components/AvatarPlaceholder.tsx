@@ -32,6 +32,8 @@ export const AvatarPlaceholder: React.FC<AvatarPlaceholderProps> = ({
         <img
           src={imagePath}
           alt={`${name}'s avatar`}
+          loading="lazy"
+          decoding="async"
           onError={() => setImageError(true)}
           className="w-full h-full object-cover z-10"
         />
