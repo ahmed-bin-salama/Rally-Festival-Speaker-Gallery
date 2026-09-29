@@ -135,7 +135,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between gap-4">
           <button
             onClick={onBackToGallery}
-            className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-300 hover:text-[#D4AF37] transition-colors bg-[#141620] px-3.5 py-2 rounded-xl border border-gray-800 hover:border-[#D4AF37]/50"
+            className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gray-300 hover:text-[#D4AF37] transition-colors bg-[#141620] px-3.5 py-2 rounded-xl border border-gray-800 hover:border-[#D4AF37]/50 focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
           >
             <svg className="w-4 h-4 dir-rtl:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -209,7 +209,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
               <button
                 onClick={handleSpinRequest}
                 disabled={isSpinning || isExhausted}
-                className={`w-full sm:flex-1 py-3 px-6 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 ${
+                className={`w-full sm:flex-1 py-3 px-6 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-lg flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${
                   isSpinning || isExhausted
                     ? 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'
                     : 'bg-gradient-to-r from-[#D4AF37] via-[#F3E5AB] to-[#D4AF37] text-gray-950 hover:brightness-110 active:scale-[0.98] border border-[#FFF8DC]'
@@ -225,7 +225,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
               <button
                 onClick={handleUndo}
                 disabled={isSpinning || spinHistory.length === 0}
-                className={`w-full sm:w-auto py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border ${
+                className={`w-full sm:w-auto py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${
                   isSpinning || spinHistory.length === 0
                     ? 'bg-[#141620] text-gray-600 border-gray-800 cursor-not-allowed'
                     : 'bg-[#1a1d29] text-gray-200 hover:text-white hover:bg-[#222636] border-gray-700 active:scale-[0.98]'
@@ -242,7 +242,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
               <button
                 onClick={() => setShowClearConfirmModal(true)}
                 disabled={isSpinning || (drawnQuestionIds.length === 0 && spinHistory.length === 0)}
-                className={`w-full sm:w-auto py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border ${
+                className={`w-full sm:w-auto py-3 px-4 rounded-xl font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 border focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${
                   isSpinning || (drawnQuestionIds.length === 0 && spinHistory.length === 0)
                     ? 'bg-[#141620] text-gray-600 border-gray-800 cursor-not-allowed'
                     : 'bg-rose-950/40 text-rose-300 hover:bg-rose-900/60 border-rose-800/60 active:scale-[0.98]'
@@ -262,7 +262,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
           <div className="lg:col-span-5 space-y-6">
 
             {/* CURRENT QUESTION CARD */}
-            <div>
+            <div aria-live="polite" aria-atomic="true">
               <h2 className="text-xs font-bold text-[#D4AF37] uppercase tracking-wider mb-2">
                 Selected Question
               </h2>
@@ -325,13 +325,13 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
             <div className="flex items-center gap-3 pt-2">
               <button
                 onClick={() => setShowClearConfirmModal(false)}
-                className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors"
+                className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 transition-colors focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmClearAll}
-                className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-rose-600 hover:bg-rose-500 text-white transition-colors"
+                className="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs bg-rose-600 hover:bg-rose-500 text-white transition-colors focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
               >
                 Clear All
               </button>

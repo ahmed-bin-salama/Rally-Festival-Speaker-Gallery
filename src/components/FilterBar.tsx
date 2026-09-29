@@ -23,7 +23,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   ];
 
   return (
-    <div className="flex flex-wrap items-center gap-2 bg-[#151821] p-1.5 rounded-xl border border-gray-800">
+    <div
+      role="toolbar"
+      aria-label="Filter speakers by status"
+      className="flex flex-wrap items-center gap-2 bg-[#151821] p-1.5 rounded-xl border border-gray-800"
+    >
       {options.map((option) => {
         const isActive = activeFilter === option.id;
         const count = counts[option.id] || 0;
@@ -31,8 +35,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         return (
           <button
             key={option.id}
+            type="button"
+            aria-pressed={isActive}
             onClick={() => onFilterChange(option.id)}
-            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+            className={`flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all focus-visible:ring-2 focus-visible:ring-[#D4AF37] ${
               isActive
                 ? 'bg-[#800020] text-white shadow-md shadow-[#800020]/20 font-semibold'
                 : 'text-gray-400 hover:text-gray-200 hover:bg-white/5'

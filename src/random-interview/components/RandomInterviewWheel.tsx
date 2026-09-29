@@ -26,20 +26,13 @@ const SEGMENT_PALETTES = [
   { baseH: 340, baseS: 70, baseL: 30 },
 ];
 
-/**
- * Generate 10 deterministic shades for a segment based on local index (0 to 9)
- */
 function getWedgeColor(segmentIndex: number, localIndex: number): string {
   const palette = SEGMENT_PALETTES[segmentIndex % SEGMENT_PALETTES.length];
-  // Alternating light/dark step to ensure high visual distinction between adjacent 6° wedges
   const lightnessOffset = (localIndex % 2 === 0 ? 0 : 8) + (localIndex * 1.5);
-  const l = Math.min( palette.baseL + lightnessOffset, 55 );
+  const l = Math.min(palette.baseL + lightnessOffset, 55);
   return `hsl(${palette.baseH}, ${palette.baseS}%, ${l}%)`;
 }
 
-/**
- * Helper to compute SVG arc wedge path given radius and angles in degrees
- */
 function describeArcWedge(
   cx: number,
   cy: number,
@@ -82,14 +75,12 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
 }) => {
   const drawnSet = useMemo(() => new Set(drawnQuestionIds), [drawnQuestionIds]);
 
-  // Center & Radius for 800x800 viewBox
   const SIZE = 800;
   const CENTER = SIZE / 2;
   const OUTER_RADIUS = 380;
   const INNER_RADIUS = 110;
-  const LABEL_RADIUS = 365; // Position near outer edge
+  const LABEL_RADIUS = 365;
 
-  // Pre-calculate 60 wedges metadata
   const wedges = useMemo(() => {
     return ALL_RANDOM_QUESTIONS.map((question, i) => {
       const startAngle = i * 6;
@@ -100,7 +91,6 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
       const path = describeArcWedge(CENTER, CENTER, INNER_RADIUS, OUTER_RADIUS, startAngle, endAngle);
       const color = getWedgeColor(segmentIndex, localIndex);
 
-      // Determine label flip to prevent upside-down text
       const normalizedAngle = (centerAngle % 360 + 360) % 360;
       const isLeftHalf = normalizedAngle > 90 && normalizedAngle < 270;
 
@@ -119,7 +109,6 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
     });
   }, [CENTER, INNER_RADIUS, OUTER_RADIUS]);
 
-  // Segment outer ring markers (every 60 degrees)
   const segmentDividers = useMemo(() => {
     return [0, 60, 120, 180, 240, 300].map((deg) => {
       const rad = (deg * Math.PI) / 180;
@@ -133,9 +122,21 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
     });
   }, [CENTER, INNER_RADIUS, OUTER_RADIUS]);
 
-  return (
-    <div className="relative w-full max-w-[760px] aspect-square mx-auto flex items-center justify-center p-2 sm:p-4 select-none">
+  const handleKeyDownHub = (e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && !disabled && !isSpinning) {
+      e.preventDefault();
+      onSpinClick();
+    }
+  };
 
+  return (
+    <div
+      role="region"
+      tabIndex={0}
+      aria-label="Random interview wheel"
+      onKeyDown={handleKeyDownHub}
+      className="relative w-full max-w-[760px] aspect-square mx-auto flex items-center justify-center p-2 sm:p-4 select-none focus-visible:ring-2 focus-visible:ring-[#D4AF37] rounded-full"
+    >
       {/* FIXED TOP POINTER */}
       <div
         className="absolute top-0 z-30 flex flex-col items-center pointer-events-none drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]"
@@ -171,7 +172,6 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
           }}
         >
           <defs>
-            {/* Outer Glow filter for current active wedge */}
             <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="4" result="blur" />
               <feComposite in="SourceGraphic" in2="blur" operator="over" />
@@ -195,7 +195,6 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
                     filter={isCurrent ? 'url(#goldGlow)' : undefined}
                     className="cursor-pointer hover:opacity-100 transition-all"
                   />
-                  {/* Used hatching overlay */}
                   {isUsed && !isCurrent && (
                     <path
                       d={w.path}
@@ -230,12 +229,10 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
               const isUsed = drawnSet.has(w.question.id);
               const isCurrent = currentQuestionId === w.question.id;
 
-              // Angle for text orientation
               const angleRad = (w.centerAngle * Math.PI) / 180;
               const textX = CENTER + LABEL_RADIUS * Math.cos(angleRad);
               const textY = CENTER + LABEL_RADIUS * Math.sin(angleRad);
 
-              // Rotation angle for text element
               let textRotate = w.centerAngle;
               if (w.isLeftHalf) {
                 textRotate += 180;
@@ -287,8 +284,11 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
         </svg>
 
         {/* CENTER CONTROL HUB (BUTTON SURFACE) */}
-        <div
-          className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full flex flex-col items-center justify-center cursor-pointer group"
+        <button
+          type="button"
+          aria-label="Spin interview wheel"
+          disabled={disabled || isSpinning}
+          className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-full flex flex-col items-center justify-center cursor-pointer group focus-visible:ring-2 focus-visible:ring-[#D4AF37]"
           style={{
             width: `${(INNER_RADIUS * 2 / SIZE) * 100}%`,
             height: `${(INNER_RADIUS * 2 / SIZE) * 100}%`,
@@ -307,7 +307,7 @@ export const RandomInterviewWheel: React.FC<RandomInterviewWheelProps> = ({
               {isSpinning ? 'SPINNING...' : 'SPIN'}
             </span>
           </div>
-        </div>
+        </button>
 
       </div>
     </div>
