@@ -12,13 +12,13 @@ export const GalleryHeader: React.FC<GalleryHeaderProps> = ({ onOpenRandomInterv
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-3">
             <img
-              src="/assets/rally-egypt.png"
+              src="./assets/rally-egypt.png"
               alt="Rally Egypt Logo"
               className="h-10 w-auto object-contain"
             />
             <div className="h-6 w-px bg-gray-800" />
             <img
-              src="/assets/rally-society-logo.png"
+              src="./assets/rally-society-logo.png"
               alt="Rally Society Logo"
               className="h-9 w-auto object-contain brightness-110"
             />
