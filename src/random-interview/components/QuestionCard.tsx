@@ -18,7 +18,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
         <h3 className="text-base font-semibold text-gray-200">
           Ready to Start the Interview
         </h3>
-        <p className="text-xs text-gray-400 mt-1 max-w-md dir-rtl">
+        <p dir="auto" className="text-xs text-gray-400 mt-1 max-w-md [unicode-bidi:isolate]">
           اضغط على زر Spin لبدء القرعة العشوائية واختيار سؤال من بين 60 سؤالاً مقسمة على 6 محاور.
         </p>
       </div>
@@ -44,7 +44,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
       </div>
 
       {/* Main Full Original Question */}
-      <div className="my-4 text-right dir-rtl">
+      <div dir="auto" className="my-4 text-right [unicode-bidi:isolate]">
         <p className="text-lg sm:text-xl md:text-2xl font-black text-white leading-relaxed tracking-wide">
           {question.originalQuestion}
         </p>
@@ -52,7 +52,7 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question }) => {
 
       {/* Segment Description Context Footer */}
       {segment && (
-        <div className="mt-6 pt-4 border-t border-gray-800/80 text-right dir-rtl">
+        <div dir="auto" className="mt-6 pt-4 border-t border-gray-800/80 text-right [unicode-bidi:isolate]">
           <p className="text-xs text-gray-400 leading-normal">
             <span className="font-semibold text-gray-300">سياق المحور: </span>
             {segment.description}

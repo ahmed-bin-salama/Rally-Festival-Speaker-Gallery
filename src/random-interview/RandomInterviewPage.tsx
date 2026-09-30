@@ -167,7 +167,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
             <h2 className="text-sm font-bold text-gray-200 uppercase tracking-wider">
               Interview Session Progress
             </h2>
-            <p className="text-xs text-gray-400 mt-0.5 dir-rtl">
+            <p dir="auto" className="text-xs text-gray-400 mt-0.5 [unicode-bidi:isolate]">
               كل سؤال يظهر مرة واحدة فقط في الجلسة حتى يتم عمل Reset.
             </p>
           </div>
@@ -183,7 +183,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
 
         {/* EXHAUSTED BANNER */}
         {isExhausted && (
-          <div className="bg-[#1e1518] border border-rose-500/40 rounded-2xl p-4 text-center text-rose-200 text-sm font-semibold dir-rtl shadow-lg">
+          <div dir="auto" className="bg-[#1e1518] border border-rose-500/40 rounded-2xl p-4 text-center text-rose-200 text-sm font-semibold [unicode-bidi:isolate] shadow-lg">
             All questions have been used. (تم استنفاذ جميع الأسئلة الـ60)
           </div>
         )}
@@ -292,7 +292,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
                         }`}
                       >
                         <span className="font-bold text-[#D4AF37]">{q.id}</span>
-                        <span className="flex-1 text-right truncate dir-rtl font-medium">
+                        <span dir="auto" className="flex-1 text-right truncate font-medium [unicode-bidi:isolate]">
                           {q.wheelLabel}
                         </span>
                       </div>
@@ -319,7 +319,7 @@ export const RandomInterviewPage: React.FC<RandomInterviewPageProps> = ({ onBack
             <h3 className="text-lg font-bold text-white">
               Clear all used questions?
             </h3>
-            <p className="text-xs text-gray-400 dir-rtl">
+            <p dir="auto" className="text-xs text-gray-400 [unicode-bidi:isolate]">
               سيتم إعادة تعيين جميع الأسئلة المستعملة (0 / 60) وحذف السجل المضي. هل أنت تأكد؟
             </p>
             <div className="flex items-center gap-3 pt-2">

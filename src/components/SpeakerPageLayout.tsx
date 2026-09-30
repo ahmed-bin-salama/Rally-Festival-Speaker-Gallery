@@ -112,8 +112,8 @@ export const SpeakerPageLayout: React.FC<SpeakerPageLayoutProps> = ({
           </div>
 
           <div
-            dir="rtl"
-            className="text-base sm:text-lg font-medium text-gray-200 leading-relaxed font-sans pr-2 border-r-2 border-[#D4AF37]"
+            dir="auto"
+            className="text-base sm:text-lg font-medium text-gray-200 leading-relaxed font-sans pr-2 border-r-2 border-[#D4AF37] [unicode-bidi:isolate]"
           >
             {speaker.introduction}
           </div>
