@@ -13,147 +13,147 @@ export interface SpeakerMetadata {
 
 export const SPEAKERS_METADATA: SpeakerMetadata[] = [
   {
-    id: "abdullah-amer",
-    name: "Abdullah Amer",
-    role: "Founder • Business Systems • Operations & Leadership",
-    avatar: "/assets/avatars/abdullah-amer.svg",
-    questionCount: 10,
-    originalIndex: 0
+    "id": "abdullah-amer",
+    "name": "Abdullah Amer",
+    "role": "Founder • Business Systems • Operations & Leadership",
+    "avatar": "/assets/avatars/abdullah-amer.jpeg",
+    "questionCount": 10,
+    "originalIndex": 0
   },
   {
-    id: "ahmed-fathy",
-    name: "Ahmed Fathy",
-    role: "Founder • Complex-Market Venture • Sustainability & Logistics",
-    avatar: "/assets/avatars/ahmed-fathy.svg",
-    questionCount: 10,
-    originalIndex: 1
+    "id": "ahmed-fathy",
+    "name": "Ahmed Fathy",
+    "role": "Founder • Complex-Market Venture • Sustainability & Logistics",
+    "avatar": "/assets/avatars/ahmed-fathy.jpeg",
+    "questionCount": 10,
+    "originalIndex": 1
   },
   {
-    id: "amany-helmy",
-    name: "Amany Helmy",
-    role: "Founder & CEO • People Growth Strategist • HR Entrepreneur",
-    avatar: "/assets/avatars/amany-helmy.svg",
-    questionCount: 10,
-    originalIndex: 2
+    "id": "amany-helmy",
+    "name": "Amany Helmy",
+    "role": "Founder & CEO • People Growth Strategist • HR Entrepreneur",
+    "avatar": "/assets/avatars/amany-helmy.jpeg",
+    "questionCount": 10,
+    "originalIndex": 2
   },
   {
-    id: "amr-abdel-karim",
-    name: "Amr Abdel Karim",
-    role: "Founder & Managing Partner • Strategic Executive • Commercial Transformation",
-    avatar: "/assets/avatars/amr-abdel-karim.svg",
-    questionCount: 10,
-    originalIndex: 3
+    "id": "amr-abdel-karim",
+    "name": "Amr Abdel Karim",
+    "role": "Founder & Managing Partner • Strategic Executive • Commercial Transformation",
+    "avatar": "/assets/avatars/amr-abdel-karim.png",
+    "questionCount": 10,
+    "originalIndex": 3
   },
   {
-    id: "aya-hamza",
-    name: "Aya Hamza",
-    role: "HR Professional • Professional Coach • Trainer",
-    avatar: "/assets/avatars/aya-hamza.svg",
-    questionCount: 10,
-    originalIndex: 4
+    "id": "aya-hamza",
+    "name": "Aya Hamza",
+    "role": "HR Professional • Professional Coach • Trainer",
+    "avatar": "/assets/avatars/aya-hamza.png",
+    "questionCount": 10,
+    "originalIndex": 4
   },
   {
-    id: "ayman-el-sherbiny",
-    name: "Ayman El-Sherbiny",
-    role: "LinkedIn Creator • Personal-Branding Consultant • Career-Development Entrepreneur",
-    avatar: "/assets/avatars/ayman-el-sherbiny.svg",
-    questionCount: 10,
-    originalIndex: 5
+    "id": "ayman-el-sherbiny",
+    "name": "Ayman El-Sherbiny",
+    "role": "LinkedIn Creator • Personal-Branding Consultant • Career-Development Entrepreneur",
+    "avatar": "/assets/avatars/ayman-el-sherbiny.jpeg",
+    "questionCount": 10,
+    "originalIndex": 5
   },
   {
-    id: "heba-soliman",
-    name: "Heba Soliman",
-    role: "Founder • Fashion Entrepreneurship • Wholesale Clothing",
-    avatar: "/assets/avatars/heba-soliman.svg",
-    questionCount: 10,
-    originalIndex: 6
+    "id": "heba-soliman",
+    "name": "Heba Soliman",
+    "role": "Founder • Fashion Entrepreneurship • Wholesale Clothing",
+    "avatar": "/assets/avatars/heba-soliman.jpeg",
+    "questionCount": 10,
+    "originalIndex": 6
   },
   {
-    id: "khaled-helmy",
-    name: "Khaled Helmy",
-    role: "Innovator / Creator • Supply Chain & S&OP • Dual Career",
-    avatar: "/assets/avatars/khaled-helmy.svg",
-    questionCount: 10,
-    originalIndex: 7
+    "id": "khaled-helmy",
+    "name": "Khaled Helmy",
+    "role": "Innovator / Creator • Supply Chain & S&OP • Dual Career",
+    "avatar": "/assets/avatars/khaled-helmy.jpeg",
+    "questionCount": 10,
+    "originalIndex": 7
   },
   {
-    id: "manar-barr",
-    name: "Manar Barr",
-    role: "Founder • Etiquette & Executive Presence • Service Business",
-    avatar: "/assets/avatars/manar-barr.svg",
-    questionCount: 10,
-    originalIndex: 8
+    "id": "manar-barr",
+    "name": "Manar Barr",
+    "role": "Founder • Etiquette & Executive Presence • Service Business",
+    "avatar": "/assets/avatars/manar-barr.png",
+    "questionCount": 10,
+    "originalIndex": 8
   },
   {
-    id: "marwan-alghalibi",
-    name: "Marwan Al-Ghalibi",
-    role: "Founder • Sustainability & Social Impact • Renewable Energy",
-    avatar: "/assets/avatars/marwan-alghalibi.svg",
-    questionCount: 10,
-    originalIndex: 9
+    "id": "medhat-yassin",
+    "name": "Medhat Yassin",
+    "role": "Founder • Commercial Strategy • Business Transformation",
+    "avatar": "/assets/avatars/medhat-yassin.jpeg",
+    "questionCount": 10,
+    "originalIndex": 9
   },
   {
-    id: "mina-louis",
-    name: "Mina Louis",
-    role: "Founder & CEO • EdTech • Learning Technologies",
-    avatar: "/assets/avatars/mina-louis.svg",
-    questionCount: 10,
-    originalIndex: 10
+    "id": "moataz-mousa",
+    "name": "Moataz Mousa",
+    "role": "Innovator / Founder • Learning & Development • Education",
+    "avatar": "/assets/avatars/moataz-mousa.jpeg",
+    "questionCount": 10,
+    "originalIndex": 10
   },
   {
-    id: "nadia-ismail",
-    name: "Nadia Ismail",
-    role: "Founder • Digital Transformation • Enterprise Solutions",
-    avatar: "/assets/avatars/nadia-ismail.svg",
-    questionCount: 10,
-    originalIndex: 11
+    "id": "mohamed-al-sheikh",
+    "name": "Mohamed Al Sheikh",
+    "role": "Mindset Coach • Community Builder • Personal Branding Mentor",
+    "avatar": "/assets/avatars/mohamed-al-sheikh.png",
+    "questionCount": 10,
+    "originalIndex": 11
   },
   {
-    id: "omar-waly",
-    name: "Omar Waly",
-    role: "Founder • Fintech • Digital Payments & Financial Services",
-    avatar: "/assets/avatars/omar-waly.svg",
-    questionCount: 10,
-    originalIndex: 12
+    "id": "mohamed-el-demerdash",
+    "name": "Mohamed El-Demerdash",
+    "role": "Founder • Logistics & E-commerce Infrastructure • Long-Term Business Building",
+    "avatar": "/assets/avatars/mohamed-el-demerdash.jpeg",
+    "questionCount": 10,
+    "originalIndex": 12
   },
   {
-    id: "ramy-el-saadany",
-    name: "Ramy El-Saadany",
-    role: "Founder • E-Commerce • Digital Retail & Consumer Tech",
-    avatar: "/assets/avatars/ramy-el-saadany.svg",
-    questionCount: 10,
-    originalIndex: 13
+    "id": "mohamed-hossam",
+    "name": "Mohamed Hossam",
+    "role": "Creator • Digital Strategy • Growth & Marketing",
+    "avatar": "/assets/avatars/mohamed-hossam.jpeg",
+    "questionCount": 10,
+    "originalIndex": 13
   },
   {
-    id: "sarah-hassan",
-    name: "Sarah Hassan",
-    role: "Founder • Healthcare Technology • Digital Health Innovation",
-    avatar: "/assets/avatars/sarah-hassan.svg",
-    questionCount: 10,
-    originalIndex: 14
+    "id": "mostafa-gabr",
+    "name": "Mostafa Gabr",
+    "role": "Founder • Productivity & Management Systems",
+    "avatar": "/assets/avatars/mostafa-gabr.jpeg",
+    "questionCount": 10,
+    "originalIndex": 14
   },
   {
-    id: "tamer-abdel-maksoud",
-    name: "Tamer Abdel Maksoud",
-    role: "Founder & CEO • B2B SaaS • Enterprise Software",
-    avatar: "/assets/avatars/tamer-abdel-maksoud.svg",
-    questionCount: 10,
-    originalIndex: 15
+    "id": "omer-dagher",
+    "name": "Omer Dagher",
+    "role": "Creator • Mobile Video Production • Training",
+    "avatar": "/assets/avatars/omer-dagher.jpeg",
+    "questionCount": 10,
+    "originalIndex": 15
   },
   {
-    id: "yasmine-el-sherif",
-    name: "Yasmine El-Sherif",
-    role: "Founder • Creative Services • Digital Marketing & Branding",
-    avatar: "/assets/avatars/yasmine-el-sherif.svg",
-    questionCount: 10,
-    originalIndex: 16
+    "id": "salah-abo-el-magd",
+    "name": "Salah Abo El-Magd",
+    "role": "CEO • Entrepreneur • International Sales Trainer • Leadership Coach",
+    "avatar": "/assets/avatars/salah-abo-el-magd.jpeg",
+    "questionCount": 10,
+    "originalIndex": 16
   },
   {
-    id: "zahra-khan",
-    name: "Zahra Khan",
-    role: "Founder • Hospitality • Tourism & Travel Tech",
-    avatar: "/assets/avatars/zahra-khan.svg",
-    questionCount: 10,
-    originalIndex: 17
+    "id": "sherine-helmy",
+    "name": "Sherine Helmy",
+    "role": "Chairman & CEO • Pharmaceutical Manufacturing • Business Leadership",
+    "avatar": "/assets/avatars/sherine-helmy.png",
+    "questionCount": 10,
+    "originalIndex": 17
   }
 ];

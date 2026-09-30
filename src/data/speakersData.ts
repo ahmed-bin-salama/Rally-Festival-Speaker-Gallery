@@ -6,7 +6,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "abdullah-amer",
     "name": "Abdullah Amer",
     "role": "Founder • Business Systems • Operations & Leadership",
-    "avatar": "/assets/avatars/abdullah-amer.svg",
+    "avatar": "/assets/avatars/abdullah-amer.jpeg",
     "introduction": "حضرتك عندك تجربة في بناء English Capsules وEMC، وفي نفس الوقت شغلك مركز جدًا على الـSystems والـOperations والـAccountability. فكنت حابب أفهم منك إزاي الـFounder ينقل الـbusiness من الاعتماد على الأشخاص لنظام يقدر يكبر.",
     "questions": [
       {
@@ -67,7 +67,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "ahmed-fathy",
     "name": "Ahmed Fathy",
     "role": "Founder • Complex-Market Venture • Sustainability & Logistics",
-    "avatar": "/assets/avatars/ahmed-fathy.svg",
+    "avatar": "/assets/avatars/ahmed-fathy.jpeg",
     "introduction": "حضرتك بتبني MEDEX في مساحة فيها Pharma وLogistics وRegulation وSustainability مع بعض، فكنت حابب أفهم منك إزاي الـFounder بياخد قرارات لما الـbusiness نفسه بيعتمد على أكتر من stakeholder.",
     "questions": [
       {
@@ -128,7 +128,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "amany-helmy",
     "name": "Amany Helmy",
     "role": "Founder & CEO • People Growth Strategist • HR Entrepreneur",
-    "avatar": "/assets/avatars/amany-helmy.svg",
+    "avatar": "/assets/avatars/amany-helmy.jpeg",
     "introduction": "حضرتك بتبني blissify من زاوية مختلفة عن الـHR التقليدية، بين الـTalent Acquisition والـEmployee Engagement والـCulture والـLeadership Development؛ فكنت حابب أفهم إزاي الـPeople Strategy ممكن تبقى جزء أساسي من نمو الـbusiness.",
     "questions": [
       {
@@ -189,7 +189,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "amr-abdel-karim",
     "name": "Amr Abdel Karim",
     "role": "Founder & Managing Partner • Strategic Executive • Commercial Transformation",
-    "avatar": "/assets/avatars/amr-abdel-karim.svg",
+    "avatar": "/assets/avatars/amr-abdel-karim.png",
     "introduction": "حضرتك عندك خبرة طويلة في الـCommercial Strategy وCustomer Experience وBusiness Transformation، ومع AKOUN دخلت كمان في الـBusiness Simulations؛ فكنت مهتم أفهم إزاي بتحوّل الـbusiness problem لحل قابل للتطبيق، وإزاي بتعرف إن الحل فعلًا بيخلق قيمة.",
     "questions": [
       {
@@ -250,7 +250,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "aya-hamza",
     "name": "Aya Hamza",
     "role": "HR Professional • Professional Coach • Trainer",
-    "avatar": "/assets/avatars/aya-hamza.svg",
+    "avatar": "/assets/avatars/aya-hamza.png",
     "introduction": "حضرتك عندك combination مميز بين الـHR وPeople & Culture، والـcoaching والـwellbeing، فكنت مهتم أعرف من خبرتك إزاي العوامل دي بتأثر فعليًا على الـFounders والـteams وطريقة بناء الـbusiness.",
     "questions": [
       {
@@ -311,7 +311,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "ayman-el-sherbiny",
     "name": "Ayman El-Sherbiny",
     "role": "LinkedIn Creator • Personal-Branding Consultant • Career-Development Entrepreneur",
-    "avatar": "/assets/avatars/ayman-el-sherbiny.svg",
+    "avatar": "/assets/avatars/ayman-el-sherbiny.jpeg",
     "introduction": "حضرتك بدأت من corporate finance وlogistics وsupply chain، وبعدها بنيت مسار قوي جدًا في الـLinkedIn والـPersonal Branding، فكنت حابب أفهم إزاي الـattention والـvisibility ممكن يتحولوا فعلًا لـcareer أو business opportunities.",
     "questions": [
       {
@@ -372,7 +372,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "heba-soliman",
     "name": "Heba Soliman",
     "role": "Founder • Fashion Entrepreneurship • Wholesale Clothing",
-    "avatar": "/assets/avatars/heba-soliman.svg",
+    "avatar": "/assets/avatars/heba-soliman.jpeg",
     "introduction": "حضرتك عندك خبرة عملية في الـwholesale clothing والـbuying والـsourcing وإدارة الـinventory والـpricing، وفي نفس الوقت بتحوّلي الخبرة دي لمحتوى وتعليم. فكنت حابب أفهم منك الـbusiness من جوّه، مش بس من زاوية الـfashion.",
     "questions": [
       {
@@ -433,7 +433,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "khaled-helmy",
     "name": "Khaled Helmy",
     "role": "Innovator / Creator • Supply Chain & S&OP • Dual Career",
-    "avatar": "/assets/avatars/khaled-helmy.svg",
+    "avatar": "/assets/avatars/khaled-helmy.jpeg",
     "introduction": "حضرتك عندك تجربة مختلفة بين الـSupply Chain وS&OP من ناحية، والـMusic وComposition والـVocal Coaching من ناحية تانية. فكنت حابب أفهم منك إزاي الخبرة في المجالين أثرت على طريقة تفكيرك وشغلك.",
     "questions": [
       {
@@ -494,7 +494,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "manar-barr",
     "name": "Manar Barr",
     "role": "Founder • Etiquette & Executive Presence • Service Business",
-    "avatar": "/assets/avatars/manar-barr.svg",
+    "avatar": "/assets/avatars/manar-barr.png",
     "introduction": "حضرتك عملت transition من الـRadiodiagnosis لبناء Maison Etiquette في مجال الـExecutive Presence والـProfessional Communication، فكنت حابب أفهم منك إزاي بدأتِ تبني business جديد حوالين expertise مختلفة، وإيه اللي اتعلمتيه في الطريق.",
     "questions": [
       {
@@ -555,7 +555,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "medhat-yassin",
     "name": "Medhat Yassin",
     "role": "Founder • Commercial Strategy • Business Transformation",
-    "avatar": "/assets/avatars/medhat-yassin.svg",
+    "avatar": "/assets/avatars/medhat-yassin.jpeg",
     "introduction": "حضرتك عندك خبرة طويلة جدًا بين الـCorporate والـEntrepreneurship والـBusiness Transformation، من IBM وP&G وBurger King لحد الـventures والاستشارات وبناء Cairo Business Community. فكنت حابب أفهم إزاي الـpatterns اللي اتعلمتها عبر المراحل دي بتأثر على قرارات الـbusiness النهارده.",
     "questions": [
       {
@@ -616,7 +616,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "moataz-mousa",
     "name": "Moataz Mousa",
     "role": "Innovator / Founder • Learning & Development • Education",
-    "avatar": "/assets/avatars/moataz-mousa.svg",
+    "avatar": "/assets/avatars/moataz-mousa.jpeg",
     "introduction": "حضرتك عندك خبرة طويلة في الـL&D والتدريب، ومعاها Career Compass والـDigital Learning والـAI for Work، فكنت حابب أفهم منك إزاي بتحوّل الـknowledge لحاجة فعلًا تغيّر سلوك الناس وتفيدهم عمليًا.",
     "questions": [
       {
@@ -677,7 +677,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "mohamed-al-sheikh",
     "name": "Mohamed Al Sheikh",
     "role": "Mindset Coach • Community Builder • Personal Branding Mentor",
-    "avatar": "/assets/avatars/mohamed-al-sheikh.svg",
+    "avatar": "/assets/avatars/mohamed-al-sheikh.png",
     "introduction": "حضرتك عندك تجربة متنوعة بين الـMindset Coaching، بناء الـCommunity، الـPersonal Branding والـContent. فكنت حابب أركز معاك على إزاي الحاجات دي بتتحول لتجربة وتأثير حقيقي على الناس.",
     "questions": [
       {
@@ -738,7 +738,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "mohamed-el-demerdash",
     "name": "Mohamed El-Demerdash",
     "role": "Founder • Logistics & E-commerce Infrastructure • Long-Term Business Building",
-    "avatar": "/assets/avatars/mohamed-el-demerdash.svg",
+    "avatar": "/assets/avatars/mohamed-el-demerdash.jpeg",
     "introduction": "حضرتك عندك رحلة طويلة مع ABS من 2001، بدأت في الـCourier واتوسعت للـLogistics والـFreight وخدمات مرتبطة بالـE-commerce، فكنت حابب أفهم منك القرارات اللي خلت الـbusiness يكمل ويتوسع على مدار السنين.",
     "questions": [
       {
@@ -799,7 +799,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "mohamed-hossam",
     "name": "Mohamed Hossam",
     "role": "Creator • Digital Strategy • Growth & Marketing",
-    "avatar": "/assets/avatars/mohamed-hossam.svg",
+    "avatar": "/assets/avatars/mohamed-hossam.jpeg",
     "introduction": "حضرتك شغلك بيجمع بين الـDigital Strategy والـPerformance Marketing والـSEO والـContent والـCommunity، فكنت حابب أفهم منك إزاي الحاجات دي بتشتغل مع بعض كـgrowth system، مش كأدوات منفصلة.",
     "questions": [
       {
@@ -860,7 +860,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "mostafa-gabr",
     "name": "Mostafa Gabr",
     "role": "Founder • Productivity & Management Systems",
-    "avatar": "/assets/avatars/mostafa-gabr.svg",
+    "avatar": "/assets/avatars/mostafa-gabr.jpeg",
     "introduction": "حضرتك مش بس بتتكلم عن الـProductivity؛ بنيت Be Productive كـbusiness فيه Training وConsulting وProductivity Journeys. فكنت حابب أفهم منك إزاي بتحوّل expertise لنظام الناس تقدر تطبقه فعلًا، وفي نفس الوقت business قابل للنمو.",
     "questions": [
       {
@@ -921,7 +921,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "omer-dagher",
     "name": "Omer Dagher",
     "role": "Creator • Mobile Video Production • Training",
-    "avatar": "/assets/avatars/omer-dagher.svg",
+    "avatar": "/assets/avatars/omer-dagher.jpeg",
     "introduction": "حضرتك بنيت الـOne-Man Crew بشكل واضح، وعندك سنين خبرة في الـMobile Video والـTraining، فكنت حابب أفهم منك إزاي بتعمل production قوي بموارد محدودة، وإزاي بتحوّل المهارة دي لنظام قابل للتكرار.",
     "questions": [
       {
@@ -982,7 +982,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "salah-abo-el-magd",
     "name": "Salah Abo El-Magd",
     "role": "CEO • Entrepreneur • International Sales Trainer • Leadership Coach",
-    "avatar": "/assets/avatars/salah-abo-el-magd.svg",
+    "avatar": "/assets/avatars/salah-abo-el-magd.jpeg",
     "introduction": "حضرتك عندك رحلة واضحة من الـCorporate Sales للتدريب، وبعدها بناء ACTA وTMS وSales Hackers؛ فكنت حابب أفهم إزاي الـexpertise الشخصية تتحول من مجرد skill أو training إلى business وsystem قابل يكبر.",
     "questions": [
       {
@@ -1043,7 +1043,7 @@ export const SPEAKERS_DATA: Speaker[] = [
     "id": "sherine-helmy",
     "name": "Sherine Helmy",
     "role": "Chairman & CEO • Pharmaceutical Manufacturing • Business Leadership",
-    "avatar": "/assets/avatars/sherine-helmy.svg",
+    "avatar": "/assets/avatars/sherine-helmy.png",
     "introduction": "حضرتك عندك خبرة طويلة جدًا في الـPharmaceutical Industry، من التصنيع والـResearch لحد التوسع الإقليمي وAccess to Medicines. فكنت حابب أفهم منك إزاي بتاخد قرارات على مستوى مؤسسة كبيرة، خصوصًا لما القرار يكون طويل المدى ومكلف.",
     "questions": [
       {
