@@ -42,10 +42,10 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question, speakerId 
         </span>
       </div>
 
-      {/* Untouched Source Question Text (supports RTL Arabic seamlessly) */}
+      {/* Untouched Source Question Text (supports RTL Arabic seamlessly with BiDi auto isolation) */}
       <div
-        dir="rtl"
-        className="text-base sm:text-lg font-medium text-gray-100 leading-relaxed font-sans border-r-2 border-[#800020] pr-4 py-1 my-3 bg-[#11131a]/50 rounded-l-lg"
+        dir="auto"
+        className="text-base sm:text-lg font-medium text-gray-100 leading-relaxed font-sans border-r-2 border-[#800020] pr-4 py-1 my-3 bg-[#11131a]/50 rounded-l-lg [unicode-bidi:isolate]"
       >
         {question.question}
       </div>
@@ -58,12 +58,12 @@ export const QuestionCard: React.FC<QuestionCardProps> = ({ question, speakerId 
         </div>
 
         <textarea
-          dir="rtl"
+          dir="auto"
           value={noteText}
           onChange={handleNoteChange}
           placeholder="تعقيب..."
           rows={2}
-          className="w-full bg-[#0d0e12] text-gray-200 border border-gray-800 rounded-xl p-3 text-sm focus:border-[#800020] focus:ring-1 focus:ring-[#800020] transition-colors resize-y min-h-[70px] leading-relaxed"
+          className="w-full bg-[#0d0e12] text-gray-200 border border-gray-800 rounded-xl p-3 text-sm focus:border-[#800020] focus:ring-1 focus:ring-[#800020] transition-colors resize-y min-h-[70px] leading-relaxed [unicode-bidi:isolate]"
         />
       </div>
     </div>
